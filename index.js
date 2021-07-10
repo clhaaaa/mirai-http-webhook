@@ -44,7 +44,7 @@ const server = http.createServer((req, res) => {
 		if (image && image.length) {
 			messageChain.push(Image({url: image}));
 		}
-		bot.sendFriendMessage(messageChain, config.bot.admin);
+		bot.sendGroupMessage(messageChain, config.bot.admin);
 		console.log(`${getTime()} webhook 调用成功`);
 	}
 
