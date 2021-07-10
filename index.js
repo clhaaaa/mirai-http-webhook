@@ -15,7 +15,7 @@ bot.onSignal('authed', () => {
 bot.onSignal('verified', ()=>{
 	const messageChain = [Plain('Webhook 已启用')];
 	if (config.bot.admin) {
-		bot.sendFriendMessage(messageChain, config.bot.admin);
+		bot.sendGroupMessage(messageChain, config.bot.admin);
 	}
 	console.log(`${getTime()} 通过: ${bot.sessionKey} 认证成功!\n`);
 });
