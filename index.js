@@ -63,6 +63,7 @@ const server = http.createServer((req, res) => {
 					if (!token) token = content.token;
 					text = content.text;
 					image = content.image;
+					at = content.at;
 				} catch (e) {
 					console.log(e);
 				}
@@ -94,4 +95,3 @@ const server = http.createServer((req, res) => {
 });
 
 server.listen(config.webhook.port, '0.0.0.0');
-
