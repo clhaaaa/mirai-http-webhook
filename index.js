@@ -31,7 +31,7 @@ function sendRawMessage(text, image, at) {
 		messageChain.push(Image({url: image}));
 	}
 	if (text && text.length) {
-		messageChain.push(At(At));
+		messageChain.push(At(at));
 	}
 	if (config.bot.isGroup) {
 		bot.sendGroupMessage(messageChain, config.bot.admin);
