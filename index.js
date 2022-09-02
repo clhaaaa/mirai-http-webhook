@@ -4,7 +4,7 @@ const {URL} = require('url');
 const config = require('./config.json');
 
 const bot = new Mirai(config.mirai);
-const {Plain, Image} = Mirai.MessageComponent;
+const {Plain, Image, At} = Mirai.MessageComponent;
 const getTime = () => new Date().toLocaleString();
 const ChatBot = require('dingtalk-robot-sender');
 
@@ -22,13 +22,16 @@ const robot = new ChatBot({
   webhook: 'https://oapi.dingtalk.com/robot/send?access_token=****'
 });
 
-function sendRawMessage(text, image) {
+function sendRawMessage(text, image, at) {
 	let messageChain = [];
 	if (text && text.length) {
 		messageChain.push(Plain(text));
 	}
 	if (image && image.length) {
 		messageChain.push(Image({url: image}));
+	}
+	if (text && text.length) {
+		messageChain.push(At(At));
 	}
 	if (config.bot.isGroup) {
 		bot.sendGroupMessage(messageChain, config.bot.admin);
@@ -45,7 +48,8 @@ const server = http.createServer((req, res) => {
 	if (req.method === 'GET') {
 		text = searchParams.get('text');
 		image = searchParams.get('image');
-		sendMessage(token, text, image);
+		at = searchParams.get('at');
+		sendMessage(token, text, image, at);
 	} else if (req.method === 'POST') {
 		let body = [];
 		req.on('data', (chunk) => {
@@ -65,11 +69,11 @@ const server = http.createServer((req, res) => {
 			} else if (contentType && contentType.includes('text/plain')) {
 				text = body;
 			}
-			sendMessage(token, text, image);
+			sendMessage(token, text, image, at);
 		});
 	}
 
-	function sendMessage(token, text, image) {
+	function sendMessage(token, text, image, at) {
 		let result = {
 			err: 0,
 			msg: 'success',
@@ -80,7 +84,7 @@ const server = http.createServer((req, res) => {
 				msg: 'token',
 			};
 		} else {
-			sendRawMessage(text, image);
+			sendRawMessage(text, image, at);
 			console.log(`${getTime()} webhook 调用成功`);
 		}
 
